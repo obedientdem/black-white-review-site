@@ -1,0 +1,235 @@
+{
+  "settings": {
+    "brand": "黑白测评组",
+    "tagline": "游戏不止一面。",
+    "tagline_en": "Every game has another side.",
+    "intro": "不同的玩家，不同的视角。我们在黑与白之间，寻找值得被看见的游戏。",
+    "intro_en": "Different players. Different perspectives. Finding games worth seeing, between black and white.",
+    "impact": "100万+",
+    "reviews": "2000+",
+    "groups": "待核实",
+    "metric_note": "历史口径由团队提供，待核验；非实时数据",
+    "metric_note_en": "Team supplied historical figures, pending verification; not live data",
+    "updated": "2026-10-16",
+    "contact": "待运营方补充 / Contact pending",
+    "hero_id": 1
+  },
+  "games": [
+    {
+      "id": 1,
+      "title": "余烬之境",
+      "developer": "示例工作室",
+      "publisher": "示例发行商",
+      "release": "2026",
+      "genre": "RPG",
+      "platforms": [
+        "PC",
+        "PS5"
+      ],
+      "store": ""
+    }
+  ],
+  "articles": [
+    {
+      "id": 1,
+      "kind": "review",
+      "title": "当世界再次\n需要一位英雄。",
+      "title_en": "When the world\nneeds a hero again.",
+      "game": "余烬之境 / Realm of Embers",
+      "score": 9.5,
+      "category": "RPG",
+      "platform": "PC",
+      "version": "示例版本 1.0",
+      "cover": "assets/embers.svg",
+      "summary": "在破碎与重生之间，寻找属于自己的道路。一段关于探索、失落与选择的旅程。",
+      "summary_en": "Find your path between ruin and rebirth. A journey of exploration, loss and choice.",
+      "body": "【示例测评，非真实产品评价】\n\n穿过灰烬覆盖的山谷，远处的城堡逐渐显露轮廓。这是一篇用于展示阅读体验的原创示例文章。\n\n世界如何讲述故事\n环境细节和探索节奏让每次偏离主路都成为一场发现。我们关注的不只是游戏能让玩家完成什么，也关注它愿意留下多少空间，让玩家形成自己的理解。\n\n战斗与选择\n示例评分只用于界面验证，不构成购买建议。正式内容将由编辑通过后台录入，并保留真实原文出处。",
+      "body_en": "DEMONSTRATION REVIEW — not an assessment of a real product.\n\nAcross the ash-covered valley, a distant citadel emerges. This original sample demonstrates the reading experience.\n\nA world that tells stories\nEnvironmental details turn each detour into a discovery. Real editorial reviews will be imported with their original sources.",
+      "pros": [
+        "富有层次的探索空间",
+        "克制而有力量的环境叙事"
+      ],
+      "cons": [
+        "部分任务节奏仍可打磨"
+      ],
+      "author": "黑白编辑部 · 示例",
+      "published": "2026-10-16",
+      "source": "原创演示内容",
+      "demo": true
+    },
+    {
+      "id": 2,
+      "kind": "review",
+      "title": "向星海深处，\n再出发一次。",
+      "title_en": "One more journey\ninto the stars.",
+      "game": "静默轨道 / Silent Orbit",
+      "score": 8.5,
+      "category": "冒险",
+      "platform": "PC",
+      "cover": "assets/orbit.svg",
+      "summary": "宇宙寂静无声，而每一次选择都有回响。",
+      "summary_en": "The universe is silent. Your choices are not.",
+      "body": "【示例】一篇关于未知、距离与回家的原创演示测评。此内容不代表真实游戏。",
+      "pros": [
+        "鲜明的视听风格"
+      ],
+      "cons": [
+        "引导尚有改进空间"
+      ],
+      "author": "编辑部 · 示例",
+      "published": "2026-10-15",
+      "demo": true
+    },
+    {
+      "id": 3,
+      "kind": "review",
+      "title": "在森林里，\n找回自己的节奏。",
+      "title_en": "Find your rhythm\nin the forest.",
+      "game": "苔原来信 / Letters from the Wild",
+      "score": 9,
+      "category": "独立",
+      "platform": "Switch",
+      "cover": "assets/forest.svg",
+      "summary": "一次轻盈的出走，一场温柔的发现。",
+      "summary_en": "A gentle escape. A quiet discovery.",
+      "body": "【示例】原创演示内容，用于展示独立游戏测评版式。",
+      "pros": [
+        "舒适的探索节奏"
+      ],
+      "cons": [
+        "内容量较为克制"
+      ],
+      "author": "编辑部 · 示例",
+      "published": "2026-10-14",
+      "demo": true
+    },
+    {
+      "id": 4,
+      "kind": "review",
+      "title": "霓虹尽头，仍有光。",
+      "title_en": "Light beyond the neon.",
+      "game": "夜航 / Night Passage",
+      "score": 8,
+      "category": "动作",
+      "platform": "PS5",
+      "cover": "assets/neon.svg",
+      "summary": "城市醒来之前，完成最后一次追逐。",
+      "summary_en": "One last chase before the city wakes.",
+      "body": "【示例】原创演示内容。",
+      "pros": [
+        "节奏明快"
+      ],
+      "cons": [
+        "关卡变化有限"
+      ],
+      "author": "编辑部 · 示例",
+      "published": "2026-10-13",
+      "demo": true
+    },
+    {
+      "id": 5,
+      "kind": "review",
+      "title": "雪落之后的远行",
+      "title_en": "Beyond the falling snow",
+      "game": "北境 / Northbound",
+      "score": 8.5,
+      "category": "冒险",
+      "platform": "PC",
+      "cover": "assets/snow.svg",
+      "summary": "在雪线之外，寻找新的地平线。",
+      "summary_en": "A new horizon beyond the snow line.",
+      "body": "【示例】原创演示内容。",
+      "pros": [
+        "氛围出众"
+      ],
+      "cons": [
+        "重复性较高"
+      ],
+      "author": "编辑部 · 示例",
+      "published": "2026-10-12",
+      "demo": true
+    },
+    {
+      "id": 6,
+      "kind": "news",
+      "title": "从一个想法，到一个世界。",
+      "title_en": "From an idea to a world.",
+      "category": "业界动态",
+      "cover": "assets/forest.svg",
+      "summary": "独立开发观察：让不同的声音被听见。",
+      "summary_en": "Independent development: making room for different voices.",
+      "body": "【示例资讯】这不是一则真实行业新闻。正式新闻将经编辑核实后发布。",
+      "author": "编辑部 · 示例",
+      "published": "2026-10-16",
+      "demo": true
+    },
+    {
+      "id": 7,
+      "kind": "news",
+      "title": "新的旅途，即将启程",
+      "title_en": "A new journey awaits",
+      "category": "新游上线",
+      "cover": "assets/orbit.svg",
+      "summary": "本周新游栏目布局示例。",
+      "summary_en": "Sample layout for upcoming releases.",
+      "body": "【示例资讯】等待正式编辑内容。",
+      "published": "2026-10-15",
+      "demo": true
+    },
+    {
+      "id": 8,
+      "kind": "news",
+      "title": "一个版本，更多可能",
+      "title_en": "One update. More possibilities.",
+      "category": "版本更新",
+      "cover": "assets/neon.svg",
+      "summary": "更新日志栏目布局示例。",
+      "summary_en": "Sample layout for update coverage.",
+      "body": "【示例资讯】等待正式编辑内容。",
+      "published": "2026-10-14",
+      "demo": true
+    }
+  ],
+  "activities": [
+    {
+      "id": 1,
+      "title": "在发行之前，先成为故事的一部分。",
+      "title_en": "Be part of the story. Before release.",
+      "kind": "recruitment",
+      "cover": "assets/forest.svg",
+      "description": "示例测试招募：了解规则、授权范围与筛选流程。此演示不收集报名。",
+      "description_en": "Sample playtest. Review rules, consent and selection. No applications collected in demo mode.",
+      "start": "2026-10-01T00:00:00Z",
+      "end": "2026-12-01T00:00:00Z",
+      "draw_at": "2026-12-02T00:00:00Z",
+      "region": "ALL",
+      "min_age": 18,
+      "slots": 20,
+      "prize": "示例游戏体验资格",
+      "questions": [
+        "你偏好的游戏类型？"
+      ],
+      "status": "published",
+      "demo": true
+    },
+    {
+      "id": 2,
+      "title": "把下一次冒险，交给一点幸运。",
+      "title_en": "Let luck choose your next adventure.",
+      "kind": "giveaway",
+      "cover": "assets/embers.svg",
+      "description": "示例抽奖：每个已验证账号一次，截止后固定资格，公平随机开奖，人工发奖。",
+      "description_en": "Sample giveaway. One verified account per entry; fixed eligibility, random draw and manual fulfillment.",
+      "start": "2026-10-01T00:00:00Z",
+      "end": "2026-12-01T00:00:00Z",
+      "draw_at": "2026-12-02T00:00:00Z",
+      "region": "ALL",
+      "min_age": 18,
+      "slots": 3,
+      "prize": "示例游戏奖励 × 3",
+      "questions": [],
+      "status": "published",
+      "demo": true
+    }
+  ]
+}
