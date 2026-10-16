@@ -13,6 +13,10 @@ from werkzeug.security import generate_password_hash
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('command',choices=['serve','create-admin','seed-demo','outbox','draw-due','backup','restore','import-content','export-static']);parser.add_argument('--file');parser.add_argument('--database',default=os.environ.get('BW_DATABASE',str(Path(__file__).resolve().parents[1]/'instance/site.sqlite')));args=parser.parse_args()
     production=os.environ.get('BW_ENV')=='production'
+    if args.command=='restore':
+        from backend.operations import restore_archive
+        if not args.file:raise SystemExit('--file required (private backup .zip)')
+        restore_archive(args.file,args.database);print('Restored to a new database path.');return
     app=create_app({'DATABASE':args.database,'PUBLIC_URL':os.environ.get('BW_PUBLIC_URL','http://127.0.0.1:8766'),'PRODUCTION':production,'MAIL_MODE':'smtp' if production else 'outbox'})
     conn=connect(args.database)
     if args.command=='serve':

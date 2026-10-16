@@ -25,7 +25,9 @@ ROOT=Path(__file__).resolve().parents[1]
 ROLES={'player','publisher','editor','admin'}
 def now(): return int(time.time())
 def pack(value): return json.dumps(value,ensure_ascii=False,separators=(',',':'))
-def digest(value): return hashlib.sha256(value.encode()).hexdigest()
+def digest(value):
+    secret=os.environ.get('BW_SECRET')
+    return hmac.new(secret.encode(),value.encode(),hashlib.sha256).hexdigest() if secret else hashlib.sha256(value.encode()).hexdigest()
 def fail(message,status=400):
     from flask import abort
     abort(status,description=message)
@@ -125,7 +127,7 @@ def create_app(config=None):
     app.config.update(config or {})
     if app.config['PRODUCTION']:
         if not app.config['PUBLIC_URL'].startswith('https://') or app.config['MAIL_MODE']!='smtp':raise RuntimeError('Production requires HTTPS and SMTP')
-        if not all(os.environ.get(k) for k in ['SMTP_HOST','SMTP_USER','SMTP_PASSWORD','SMTP_FROM','BW_SECRET']):raise RuntimeError('Missing production secrets')
+        if not all(os.environ.get(k) for k in ['SMTP_HOST','SMTP_USER','SMTP_PASSWORD','SMTP_FROM','BW_SECRET']) or len(os.environ.get('BW_SECRET',''))<32:raise RuntimeError('Missing production secrets or BW_SECRET is shorter than 32 characters')
     Path(app.config['DATABASE']).parent.mkdir(parents=True,exist_ok=True)
     conn=connect(app.config['DATABASE'])
     try:conn.executescript((ROOT/'backend/schema.sql').read_text(encoding='utf-8'))
@@ -310,9 +312,17 @@ def create_app(config=None):
     @app.patch('/api/admin/settings')
     @require('admin')
     def admin_settings():
-        data=data_in();allowed=['brand','tagline','tagline_en','intro','intro_en','impact','reviews','groups','metric_note','metric_note_en','updated','contact','hero_id']
+        data=data_in();allowed=['brand','tagline','tagline_en','intro','intro_en','impact','reviews','groups','metric_note','metric_note_en','updated','contact','hero_id','team','team_en','communities','communities_en','cases']
         if any(k not in allowed for k in data):fail('Unknown setting')
-        value={k:text(data,k,0,4000) for k in data if k!='hero_id'}
+        value={k:text(data,k,0,4000) for k in data if k not in ['hero_id','cases']}
+        if 'cases' in data:
+            cases=data['cases']
+            if not isinstance(cases,list) or len(cases)>30:fail('Invalid public cases')
+            cleaned=[]
+            for case in cases:
+                if not isinstance(case,dict) or case.get('rights_confirmed') is not True:fail('Public cases require confirmed publication permission')
+                cleaned.append({k:text(case,k,1,2000) for k in ['title','description']})
+            value['cases']=cleaned
         if 'hero_id' in data:
             if not isinstance(data['hero_id'],int):fail('Invalid hero_id')
             value['hero_id']=data['hero_id']
@@ -349,6 +359,8 @@ def create_app(config=None):
     def uploaded(name):return send_from_directory(Path(app.config['DATABASE']).parent/'uploads',name)
     @app.get('/')
     def index():return send_from_directory(ROOT/'site','index.html')
+    @app.route('/api/<path:unknown>',methods=['GET','POST','PATCH','DELETE','PUT'])
+    def unknown_api(unknown):fail('API not found',404)
     @app.get('/<path:name>')
     def static(name):return send_from_directory(ROOT/'site',name)
 
