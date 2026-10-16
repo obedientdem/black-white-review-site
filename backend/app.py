@@ -242,7 +242,13 @@ def create_app(config=None):
         if g.user['role']=='admin':fail('Transfer administration before deleting admin account',409)
         uid=g.user['id']
         if db().execute('SELECT 1 FROM activities WHERE owner_id=?',(uid,)).fetchone():fail('Ask an administrator to transfer activities first',409)
-        db().execute('UPDATE articles SET owner_id=NULL WHERE owner_id=?',(uid,));audit('account-delete',uid);db().execute('DELETE FROM users WHERE id=?',(uid,));return jsonify(csrf=rotate_session(),ok=True)
+        conn=db();conn.execute('BEGIN IMMEDIATE')
+        # Before closing, withdrawal removes the entry. After closing, preserve
+        # only its anonymous ID so the committed draw set cannot be changed.
+        for entry in conn.execute('SELECT e.id,a.data FROM entries e JOIN activities a ON a.id=e.activity_id WHERE e.user_id=?',(uid,)).fetchall():
+            if now()<time_value(json.loads(entry['data'])['end']):conn.execute('DELETE FROM entries WHERE id=?',(entry['id'],))
+            else:conn.execute('UPDATE entries SET user_id=NULL,data=? WHERE id=?',(pack({}),entry['id']))
+        conn.execute('UPDATE articles SET owner_id=NULL WHERE owner_id=?',(uid,));audit('account-delete',uid);conn.execute('DELETE FROM users WHERE id=?',(uid,));conn.commit();return jsonify(csrf=rotate_session(),ok=True)
 
     @app.get('/api/public')
     def public():
@@ -265,6 +271,8 @@ def create_app(config=None):
         if resource in ['articles','games']:
             return jsonify(rows=[item(r) for r in db().execute('SELECT * FROM '+resource)])
         if g.user['role']!='admin':fail('Insufficient permission',403)
+        if resource in ['activities','comments','publisher_requests','business','applications','awards']:
+            return app.view_functions['workflow_list'](resource)
         if resource=='settings':
             row=db().execute('SELECT data FROM settings WHERE id=1').fetchone();return jsonify(data=json.loads(row[0]) if row else {})
         if resource=='users':return jsonify(rows=[public_user(r) for r in db().execute('SELECT * FROM users')])
@@ -344,4 +352,6 @@ def create_app(config=None):
     @app.get('/<path:name>')
     def static(name):return send_from_directory(ROOT/'site',name)
 
+    from backend.business import register_business
+    register_business(app)
     return app
