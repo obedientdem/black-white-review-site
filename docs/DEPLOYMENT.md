@@ -34,7 +34,7 @@ python scripts/build_standalone.py
 
 使用 Waitress，绑定 127.0.0.1:8766；反向代理向此地址转发，并强制 HTTPS。API 校验固定 PUBLIC_URL Origin；不允许跨域任意来源或 file:// 调用正式后台。配置代理日志时不要记录密码、CSRF、Cookie、邮件令牌与申请正文。公网域名邮件需要 SPF/DKIM/DMARC 和实际投递验收，此处尚未接入或验证。
 
-自动开奖：用系统调度器每分钟运行 `python scripts/manage.py draw-due --database <私有数据库路径>`，必须使用相同生产环境与依赖路径。任务不依赖网页打开。失败返回非零，应监控退出状态并重试；数据库事务/唯一约束防止重开奖与重复发奖。尚无服务器，因此未创建线上定时任务。
+自动开奖：本地 `serve` 内置每分钟worker。生产独立运行 `python scripts/manage.py worker` 并由服务管理器守护，或用系统调度器每分钟运行 `python scripts/manage.py draw-due --database <私有数据库路径>`；必须使用相同生产环境与依赖路径。任务不依赖网页打开。失败应监控并重试，数据库事务/唯一约束防重复。尚无服务器，未创建线上任务。
 
 开奖发布前生成种子承诺；报名合格时固化资格，截止后匿名entry ID集合保持稳定。使用 HMAC-SHA256(seed, entry ID)排序取前N位，开奖后公布seed、commitment、entry ID快照与结果供复算，不公布邮箱。管理员能接触服务器秘密，因此这不是对运营者恶意操控的零信任方案；需要更强保证时接入独立公证随机源。地区和18岁声明尚非身份/地理验证；高于18岁的活动在没有额外年龄验证服务时拒绝报名。
 

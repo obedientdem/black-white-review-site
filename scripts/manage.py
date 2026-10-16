@@ -11,7 +11,7 @@ from backend.app import create_app,connect,pack
 from werkzeug.security import generate_password_hash
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('command',choices=['serve','create-admin','seed-demo','outbox','draw-due','backup','restore','import-content','export-static']);parser.add_argument('--file');parser.add_argument('--database',default=os.environ.get('BW_DATABASE',str(Path(__file__).resolve().parents[1]/'instance/site.sqlite')));args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('command',choices=['serve','worker','create-admin','seed-demo','outbox','draw-due','backup','restore','import-content','export-static']);parser.add_argument('--file');parser.add_argument('--database',default=os.environ.get('BW_DATABASE',str(Path(__file__).resolve().parents[1]/'instance/site.sqlite')));args=parser.parse_args()
     production=os.environ.get('BW_ENV')=='production'
     if args.command=='restore':
         from backend.operations import restore_archive
@@ -21,7 +21,14 @@ def main():
     conn=connect(args.database)
     if args.command=='serve':
         from waitress import serve
+        if not production:
+            import threading
+            from backend.scheduler import worker
+            threading.Thread(target=worker,args=(app,),daemon=True).start()
         print('Local: http://127.0.0.1:8766',flush=True);serve(app,host='127.0.0.1',port=8766)
+    elif args.command=='worker':
+        from backend.scheduler import worker
+        print('Draw worker active (60-second ticks). Stop with Ctrl+C.',flush=True);worker(app)
     elif args.command=='create-admin':
         email=input('Admin email: ').strip().lower();password=getpass.getpass('Admin password (12+ chars): ')
         import re

@@ -86,3 +86,22 @@ class ReleaseTests(ApiCase):
             self.assertEqual(r.status_code,202)
             sender=smtp.return_value.__enter__.return_value;sender.starttls.assert_called_once();sender.send_message.assert_called_once()
             self.assertEqual(self.conn.execute('SELECT COUNT(*) FROM outbox').fetchone()[0],0)
+
+    def test_worker_tick_processes_due_draw_without_http_request(self):
+        from backend.scheduler import tick
+        from test_p3 import iso
+        data={'kind':'giveaway','status':'published','title':'Worker test','description':'Rules','cover':'assets/forest.svg','start':iso(now()-100),'end':iso(now()-20),'draw_at':iso(now()-10),'region':'ALL','min_age':18,'slots':1,'prize':'Sample','questions':[]}
+        id=self.call('/admin/activities',data=data).json['id'];tick(self.app);tick(self.app)
+        self.assertEqual(self.conn.execute('SELECT COUNT(*) FROM draws WHERE activity_id=?',(id,)).fetchone()[0],1)
+
+    def test_worker_retries_failed_tick_instead_of_exiting(self):
+        import threading
+        from backend.scheduler import worker
+        stop=threading.Event();calls=[]
+        def attempt(app):
+            calls.append(True)
+            if len(calls)==1:raise SystemExit(1)
+            stop.set()
+        with patch('backend.scheduler.tick',side_effect=attempt),self.assertLogs(level='ERROR'):
+            worker(self.app,stop,interval=0)
+        self.assertEqual(len(calls),2)

@@ -4,6 +4,8 @@
 
 **状态：本地可测试版本 + GitHub Pages 前台展示版。尚未接入线上后端/真实邮件，示例内容不是正式运营内容。**
 
+在线展示：https://obedientdem.github.io/black-white-review-site/
+
 ## 直接查看
 双击根目录 `index.html`：CSS、脚本与原创示例插画已全部内嵌，无需联网或安装。也可打开 `site/index.html`（保留同目录文件）。
 
@@ -12,7 +14,7 @@
 ## 本机启动
 依赖已安装到 `D:\codex\black-white-review-site\python`。双击 `启动本地后台.cmd`，访问 http://127.0.0.1:8766 。
 
-首次创建自己的管理员（终端交互输入，不将密码写进代码）：
+首次双击 `创建管理员.cmd`，交互输入自己的邮箱和12位以上密码，再启动后台登录。也可使用终端（不将密码写进代码）：
 
 ```powershell
 $env:PYTHONPATH='D:/codex/black-white-review-site/python'
@@ -38,3 +40,5 @@ $python='C:/Users/18110/.cache/codex-runtimes/codex-primary-runtime/dependencies
 本地后台编辑立即保存到私有 SQLite 数据库并反映到本地前台。GitHub Pages 是静态快照，编辑后执行 `export-static` 导出公开数据、运行测试并提交新快照。Pages 不运行注册、审核或开奖。
 
 正式后台选择持久磁盘服务器后，可同源托管全部站点。禁止把 SQLite、outbox、SMTP 凭证或 `instance/` 上传公开仓库。
+
+本地 `serve` 自动运行每分钟开奖worker。生产使用独立 `python scripts/manage.py worker` 服务或每分钟调用 `draw-due`。停止服务期间不执行，恢复后幂等补执行到期活动。
